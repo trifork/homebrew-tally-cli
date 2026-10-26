@@ -1,0 +1,51 @@
+name: Homebrew formula
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash -euo pipefail {0}
+
+jobs:
+  formula:
+    runs-on: macos-14
+    timeout-minutes: 30
+    steps:
+      - name: Set up Homebrew tap
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878 # 2026.10.19.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify Apple Silicon runner
+        run: test "$(uname -m)" = arm64
+
+      - name: Check formula style
+        run: brew style "${{ steps.set-up-homebrew.outputs.tap-name }}/tally-cli"
+
+      - name: Audit formula
+        run: brew audit --strict "${{ steps.set-up-homebrew.outputs.tap-name }}/tally-cli"
+
+      - name: Fetch verified artifacts
+        run: brew fetch --formula "${{ steps.set-up-homebrew.outputs.tap-name }}/tally-cli"
+
+      - name: Install without build-time network access
+        env:
+          HOMEBREW_FORMULA_BUILD_NETWORK: deny
+        run: brew install --build-from-source "${{ steps.set-up-homebrew.outputs.tap-name }}/tally-cli"
+
+      - name: Test installed command
+        run: |
+          brew test "${{ steps.set-up-homebrew.outputs.tap-name }}/tally-cli"
+          test "$(tally --version)" = "tally 0.6.1"
+          tally --help | grep -q doctor
+
+      - name: Uninstall formula
+        if: always()
+        run: brew uninstall tally-cli || true
