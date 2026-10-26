@@ -163,6 +163,17 @@ class TallyCli < Formula
     bin.install_symlink venv.root/"bin/tally"
   end
 
+  def caveats
+    <<~EOS
+      If `tally --version` reports an older release, a previous installation may
+      appear earlier on PATH. Inspect and remove a legacy uv installation with:
+
+        which -a tally
+        uv tool uninstall tally-cli
+        rehash
+    EOS
+  end
+
   test do
     assert_match "tally #{version}", shell_output("#{bin}/tally --version")
     assert_match "doctor", shell_output("#{bin}/tally --help")

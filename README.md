@@ -96,6 +96,18 @@ brew upgrade tally-cli
 Configuration, Keychain credentials, and reminder state are preserved across
 upgrades.
 
+If `tally --version` still reports an older private-installer release, inspect
+PATH and remove only the legacy uv-managed executable:
+
+```bash
+which -a tally
+uv tool uninstall tally-cli
+rehash
+```
+
+This does not remove Tally configuration, Keychain credentials, or reminder
+state.
+
 ## Uninstall
 
 Remove only the Homebrew-managed executable:
