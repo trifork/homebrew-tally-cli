@@ -52,7 +52,7 @@ Verify the installation:
 
 ```bash
 tally --version
-tally doctor
+tally --help
 ```
 
 ## First-time setup
