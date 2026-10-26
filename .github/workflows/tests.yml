@@ -38,7 +38,7 @@ jobs:
       - name: Install without build-time network access
         env:
           HOMEBREW_FORMULA_BUILD_NETWORK: deny
-        run: brew install --build-from-source "${{ steps.set-up-homebrew.outputs.tap-name }}/tally-cli"
+        run: brew install "${{ steps.set-up-homebrew.outputs.tap-name }}/tally-cli"
 
       - name: Test installed command
         run: |
