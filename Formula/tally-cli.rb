@@ -8,7 +8,7 @@ class TallyCli < Formula
   license :cannot_represent
 
   depends_on arch: :arm64
-  depends_on macos: :ventura
+  depends_on macos: :tahoe
   depends_on "python@3.12"
 
   resource "anyio" do

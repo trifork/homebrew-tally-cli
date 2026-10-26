@@ -39,14 +39,16 @@ attendance information.
 
 ## Install
 
-The initial formula supports Apple Silicon Macs running macOS 13 or newer:
+The initial formula supports Apple Silicon Macs running macOS 26 or newer:
 
 ```bash
 brew install trifork/tally-cli/tally-cli
 ```
 
 The formula uses public, checksummed application and dependency wheels. It does
-not require access to the private application source repository.
+not require access to the private application source repository. Apple Silicon
+Macs on macOS 13–15 can use the pinned private installer while current Homebrew
+bottles no longer cover those macOS versions.
 
 Verify the installation:
 
